@@ -6,6 +6,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/tigerwill90/fox"
 	"io"
 	"log"
 	"net/http"
@@ -28,7 +29,6 @@ import (
 	"github.com/dimfeld/httptreemux"
 	"github.com/emicklei/go-restful"
 	"github.com/gin-gonic/gin"
-	"github.com/go-chi/chi"
 	"github.com/go-martini/martini"
 	"github.com/go-zoo/bone"
 	"github.com/gocraft/web"
@@ -39,9 +39,6 @@ import (
 	llog "github.com/lunny/log"
 	"github.com/lunny/tango"
 	vulcan "github.com/mailgun/route"
-	"github.com/mikespook/possum"
-	possumrouter "github.com/mikespook/possum/router"
-	possumview "github.com/mikespook/possum/view"
 	"github.com/naoina/denco"
 	urlrouter "github.com/naoina/kocha-urlrouter"
 	_ "github.com/naoina/kocha-urlrouter/doublearray"
@@ -52,7 +49,6 @@ import (
 	// "github.com/revel/pathtree"
 	// "github.com/revel/revel"
 	"github.com/aerogo/aero"
-	"github.com/typepress/rivet"
 	"github.com/ursiform/bear"
 	"github.com/vanng822/r2router"
 	goji "github.com/zenazn/goji/web"
@@ -350,61 +346,6 @@ func loadBoneSingle(method, path string, handler http.Handler) http.Handler {
 		panic("Unknow HTTP method: " + method)
 	}
 	return router
-}
-
-// chi
-// chi
-func chiHandleWrite(w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, chi.URLParam(r, "name"))
-}
-
-func loadChi(routes []route) http.Handler {
-	h := httpHandlerFunc
-	if loadTestHandler {
-		h = httpHandlerFuncTest
-	}
-
-	re := regexp.MustCompile(":([^/]*)")
-
-	mux := chi.NewRouter()
-	for _, route := range routes {
-		path := re.ReplaceAllString(route.path, "{$1}")
-
-		switch route.method {
-		case "GET":
-			mux.Get(path, h)
-		case "POST":
-			mux.Post(path, h)
-		case "PUT":
-			mux.Put(path, h)
-		case "PATCH":
-			mux.Patch(path, h)
-		case "DELETE":
-			mux.Delete(path, h)
-		default:
-			panic("Unknown HTTP method: " + route.method)
-		}
-	}
-	return mux
-}
-
-func loadChiSingle(method, path string, handler http.HandlerFunc) http.Handler {
-	mux := chi.NewRouter()
-	switch method {
-	case "GET":
-		mux.Get(path, handler)
-	case "POST":
-		mux.Post(path, handler)
-	case "PUT":
-		mux.Put(path, handler)
-	case "PATCH":
-		mux.Patch(path, handler)
-	case "DELETE":
-		mux.Delete(path, handler)
-	default:
-		panic("Unknown HTTP method: " + method)
-	}
-	return mux
 }
 
 // CloudyKit Router
@@ -896,6 +837,37 @@ func loadGowwwRouterSingle(method, path string, handler http.Handler) http.Handl
 	return router
 }
 
+func foxRouteHandle(fox.Context) error { return nil }
+
+func foxHandleWrite(c fox.Context) error {
+	io.WriteString(c.Writer(), c.Param("name"))
+	return nil
+}
+
+func foxHandleTest(c fox.Context) error {
+	io.WriteString(c.Writer(), c.Request().RequestURI)
+	return nil
+}
+
+func loadFox(routes []route) http.Handler {
+	h := foxRouteHandle
+	if loadTestHandler {
+		h = foxHandleTest
+	}
+
+	router := fox.New()
+	for _, route := range routes {
+		router.MustHandle(route.method, route.path, h)
+	}
+	return router
+}
+
+func loadFoxSingle(method, path string, handle fox.HandlerFunc) http.Handler {
+	router := fox.New()
+	router.MustHandle(method, path, handle)
+	return router
+}
+
 // HttpRouter
 func httpRouterHandle(_ http.ResponseWriter, _ *http.Request, _ httprouter.Params) {}
 
@@ -1238,40 +1210,6 @@ func loadPatSingle(method, path string, handler http.Handler) http.Handler {
 	return m
 }
 
-// Possum
-func possumHandler(c *possum.Context) error {
-	return nil
-}
-
-func possumHandlerWrite(c *possum.Context) error {
-	io.WriteString(c.Response, c.Request.URL.Query().Get("name"))
-	return nil
-}
-
-func possumHandlerTest(c *possum.Context) error {
-	io.WriteString(c.Response, c.Request.RequestURI)
-	return nil
-}
-
-func loadPossum(routes []route) http.Handler {
-	h := possumHandler
-	if loadTestHandler {
-		h = possumHandlerTest
-	}
-
-	router := possum.NewServerMux()
-	for _, route := range routes {
-		router.HandleFunc(possumrouter.Simple(route.path), h, possumview.Simple("text/html", "utf-8"))
-	}
-	return router
-}
-
-func loadPossumSingle(method, path string, handler possum.HandlerFunc) http.Handler {
-	router := possum.NewServerMux()
-	router.HandleFunc(possumrouter.Simple(path), handler, possumview.Simple("text/html", "utf-8"))
-	return router
-}
-
 // R2router
 func r2routerHandler(w http.ResponseWriter, req *http.Request, _ r2router.Params) {}
 
@@ -1422,38 +1360,6 @@ func loadR2routerSingle(method, path string, handler r2router.HandlerFunc) http.
 // 	rc.router = router
 // 	return rc
 // }
-
-// Rivet
-func rivetHandler() {}
-
-func rivetHandlerWrite(c *rivet.Context) {
-	c.WriteString(c.Get("name"))
-}
-
-func rivetHandlerTest(c *rivet.Context) {
-	c.WriteString(c.Req.RequestURI)
-}
-
-func loadRivet(routes []route) http.Handler {
-	var h interface{} = rivetHandler
-	if loadTestHandler {
-		h = rivetHandlerTest
-	}
-
-	router := rivet.New()
-	for _, route := range routes {
-		router.Handle(route.method, route.path, h)
-	}
-	return router
-}
-
-func loadRivetSingle(method, path string, handler interface{}) http.Handler {
-	router := rivet.New()
-
-	router.Handle(method, path, handler)
-
-	return router
-}
 
 // Tango
 func tangoHandler(ctx *tango.Context) {}

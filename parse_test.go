@@ -55,6 +55,52 @@ var parseAPI = []route{
 	{"POST", "/1/functions"},
 }
 
+// Parse
+// https://parse.com/docs/rest#summary
+var foxParseAPI = []route{
+	// Objects
+	{"POST", "/1/classes/{className}"},
+	{"GET", "/1/classes/{className}/{objectId}"},
+	{"PUT", "/1/classes/{className}/{objectId}"},
+	{"GET", "/1/classes/{className}"},
+	{"DELETE", "/1/classes/{className}/{objectId}"},
+
+	// Users
+	{"POST", "/1/users"},
+	{"GET", "/1/login"},
+	{"GET", "/1/users/{objectId}"},
+	{"PUT", "/1/users/{objectId}"},
+	{"GET", "/1/users"},
+	{"DELETE", "/1/users/{objectId}"},
+	{"POST", "/1/requestPasswordReset"},
+
+	// Roles
+	{"POST", "/1/roles"},
+	{"GET", "/1/roles/{objectId}"},
+	{"PUT", "/1/roles/{objectId}"},
+	{"GET", "/1/roles"},
+	{"DELETE", "/1/roles/{objectId}"},
+
+	// Files
+	{"POST", "/1/files/{fileName}"},
+
+	// Analytics
+	{"POST", "/1/events/{eventName}"},
+
+	// Push Notifications
+	{"POST", "/1/push"},
+
+	// Installations
+	{"POST", "/1/installations"},
+	{"GET", "/1/installations/{objectId}"},
+	{"PUT", "/1/installations/{objectId}"},
+	{"GET", "/1/installations"},
+	{"DELETE", "/1/installations/{objectId}"},
+
+	// Cloud Functions
+	{"POST", "/1/functions"},
+}
+
 var (
 	parseAce             http.Handler
 	parseAero            http.Handler
@@ -77,6 +123,7 @@ var (
 	parseHttpTreeMux     http.Handler
 	parseKocha           http.Handler
 	parseLARS            http.Handler
+	parseFox             http.Handler
 	parseMacaron         http.Handler
 	parseMartini         http.Handler
 	parsePat             http.Handler
@@ -109,9 +156,6 @@ func init() {
 	calcMem("Bone", func() {
 		parseBone = loadBone(parseAPI)
 	})
-	calcMem("Chi", func() {
-		parseChi = loadChi(parseAPI)
-	})
 	calcMem("CloudyKitRouter", func() {
 		parseCloudyKitRouter = loadCloudyKitRouter(parseAPI)
 	})
@@ -123,6 +167,9 @@ func init() {
 	})
 	calcMem("Gin", func() {
 		parseGin = loadGin(parseAPI)
+	})
+	calcMem("Fox", func() {
+		parseFox = loadFox(foxParseAPI)
 	})
 	calcMem("GocraftWeb", func() {
 		parseGocraftWeb = loadGocraftWeb(parseAPI)
@@ -166,18 +213,12 @@ func init() {
 	calcMem("Pat", func() {
 		parsePat = loadPat(parseAPI)
 	})
-	calcMem("Possum", func() {
-		parsePossum = loadPossum(parseAPI)
-	})
 	calcMem("R2router", func() {
 		parseR2router = loadR2router(parseAPI)
 	})
 	// calcMem("Revel", func() {
 	// 	parseRevel = loadRevel(parseAPI)
 	// })
-	calcMem("Rivet", func() {
-		parseRivet = loadRivet(parseAPI)
-	})
 	calcMem("Tango", func() {
 		parseTango = loadTango(parseAPI)
 	})
@@ -198,6 +239,10 @@ func init() {
 }
 
 // Static
+func BenchmarkFox_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseFox, req)
+}
 func BenchmarkAce_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseAce, req)
@@ -303,10 +348,10 @@ func BenchmarkR2router_ParseStatic(b *testing.B) {
 	benchRequest(b, parseR2router, req)
 }
 
-// func BenchmarkRevel_ParseStatic(b *testing.B) {
-// 	req, _ := http.NewRequest("GET", "/1/users", nil)
-// 	benchRequest(b, parseRevel, req)
-// }
+//	func BenchmarkRevel_ParseStatic(b *testing.B) {
+//		req, _ := http.NewRequest("GET", "/1/users", nil)
+//		benchRequest(b, parseRevel, req)
+//	}
 func BenchmarkRivet_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseRivet, req)
@@ -334,6 +379,10 @@ func BenchmarkVulcan_ParseStatic(b *testing.B) {
 // }
 
 // One Param
+func BenchmarkFox_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseFox, req)
+}
 func BenchmarkAce_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseAce, req)
@@ -439,10 +488,10 @@ func BenchmarkR2router_ParseParam(b *testing.B) {
 	benchRequest(b, parseR2router, req)
 }
 
-// func BenchmarkRevel_ParseParam(b *testing.B) {
-// 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
-// 	benchRequest(b, parseRevel, req)
-// }
+//	func BenchmarkRevel_ParseParam(b *testing.B) {
+//		req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+//		benchRequest(b, parseRevel, req)
+//	}
 func BenchmarkRivet_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseRivet, req)
@@ -470,6 +519,10 @@ func BenchmarkVulcan_ParseParam(b *testing.B) {
 // }
 
 // Two Params
+func BenchmarkFox_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseFox, req)
+}
 func BenchmarkAce_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseAce, req)
@@ -575,10 +628,10 @@ func BenchmarkR2router_Parse2Params(b *testing.B) {
 	benchRequest(b, parseR2router, req)
 }
 
-// func BenchmarkRevel_Parse2Params(b *testing.B) {
-// 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
-// 	benchRequest(b, parseRevel, req)
-// }
+//	func BenchmarkRevel_Parse2Params(b *testing.B) {
+//		req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+//		benchRequest(b, parseRevel, req)
+//	}
 func BenchmarkRivet_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseRivet, req)
@@ -606,6 +659,9 @@ func BenchmarkVulcan_Parse2Params(b *testing.B) {
 // }
 
 // All Routes
+func BenchmarkFox_ParseAll(b *testing.B) {
+	benchRoutes(b, parseFox, foxParseAPI)
+}
 func BenchmarkAce_ParseAll(b *testing.B) {
 	benchRoutes(b, parseAce, parseAPI)
 }
@@ -685,9 +741,9 @@ func BenchmarkR2router_ParseAll(b *testing.B) {
 	benchRoutes(b, parseR2router, parseAPI)
 }
 
-// func BenchmarkRevel_ParseAll(b *testing.B) {
-// 	benchRoutes(b, parseRevel, parseAPI)
-// }
+//	func BenchmarkRevel_ParseAll(b *testing.B) {
+//		benchRoutes(b, parseRevel, parseAPI)
+//	}
 func BenchmarkRivet_ParseAll(b *testing.B) {
 	benchRoutes(b, parseRivet, parseAPI)
 }

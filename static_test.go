@@ -192,6 +192,7 @@ var (
 	staticHttpRouter      http.Handler
 	staticHttpTreeMux     http.Handler
 	staticKocha           http.Handler
+	staticFox             http.Handler
 	staticLARS            http.Handler
 	staticMacaron         http.Handler
 	staticMartini         http.Handler
@@ -233,8 +234,8 @@ func init() {
 	calcMem("Bone", func() {
 		staticBone = loadBone(staticRoutes)
 	})
-	calcMem("Chi", func() {
-		staticChi = loadChi(staticRoutes)
+	calcMem("Fox", func() {
+		staticFox = loadFox(staticRoutes)
 	})
 	calcMem("CloudyKitRouter", func() {
 		staticCloudyKitRouter = loadCloudyKitRouter(staticRoutes)
@@ -290,18 +291,13 @@ func init() {
 	calcMem("Pat", func() {
 		staticPat = loadPat(staticRoutes)
 	})
-	calcMem("Possum", func() {
-		staticPossum = loadPossum(staticRoutes)
-	})
+
 	calcMem("R2router", func() {
 		staticR2router = loadR2router(staticRoutes)
 	})
 	// calcMem("Revel", func() {
 	// 	staticRevel = loadRevel(staticRoutes)
 	// })
-	calcMem("Rivet", func() {
-		staticRivet = loadRivet(staticRoutes)
-	})
 	calcMem("Tango", func() {
 		staticTango = loadTango(staticRoutes)
 	})
@@ -322,7 +318,9 @@ func init() {
 }
 
 // All routes
-
+func BenchmarkFox_StaticAll(b *testing.B) {
+	benchRoutes(b, staticFox, staticRoutes)
+}
 func BenchmarkAce_StaticAll(b *testing.B) {
 	benchRoutes(b, staticAce, staticRoutes)
 }
@@ -405,9 +403,9 @@ func BenchmarkR2router_StaticAll(b *testing.B) {
 	benchRoutes(b, staticR2router, staticRoutes)
 }
 
-// func BenchmarkRevel_StaticAll(b *testing.B) {
-// 	benchRoutes(b, staticRevel, staticRoutes)
-// }
+//	func BenchmarkRevel_StaticAll(b *testing.B) {
+//		benchRoutes(b, staticRevel, staticRoutes)
+//	}
 func BenchmarkRivet_StaticAll(b *testing.B) {
 	benchRoutes(b, staticRivet, staticRoutes)
 }
