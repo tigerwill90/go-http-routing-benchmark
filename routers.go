@@ -837,7 +837,7 @@ func loadGowwwRouterSingle(method, path string, handler http.Handler) http.Handl
 	return router
 }
 
-func foxRouteHandle(fox.Context) error { return nil }
+func foxRouteHandle(c fox.Context) error { return nil }
 
 func foxHandleWrite(c fox.Context) error {
 	io.WriteString(c.Writer(), c.Param("name"))
@@ -865,6 +865,16 @@ func loadFox(routes []route) http.Handler {
 func loadFoxSingle(method, path string, handle fox.HandlerFunc) http.Handler {
 	router := fox.New()
 	router.MustHandle(method, path, handle)
+	return router
+}
+
+func httpStdMux(http.ResponseWriter, *http.Request) {}
+
+func loadStdMux(routes []route) http.Handler {
+	router := http.NewServeMux()
+	for _, route := range routes {
+		router.HandleFunc(route.path, httpStdMux)
+	}
 	return router
 }
 
@@ -916,6 +926,20 @@ func loadHttpTreeMux(routes []route) http.Handler {
 	}
 
 	router := httptreemux.New()
+	for _, route := range routes {
+		router.Handle(route.method, route.path, h)
+	}
+	return router
+}
+
+func loadHttpTreeMuxParallel(routes []route) http.Handler {
+	h := httpTreeMuxHandler
+	if loadTestHandler {
+		h = httpTreeMuxHandlerTest
+	}
+
+	router := httptreemux.New()
+	router.SafeAddRoutesWhileRunning = true
 	for _, route := range routes {
 		router.Handle(route.method, route.path, h)
 	}

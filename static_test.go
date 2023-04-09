@@ -172,33 +172,35 @@ var staticRoutes = []route{
 var (
 	staticHttpServeMux http.Handler
 
-	staticAce             http.Handler
-	staticAero            http.Handler
-	staticBear            http.Handler
-	staticBeego           http.Handler
-	staticBone            http.Handler
-	staticChi             http.Handler
-	staticCloudyKitRouter http.Handler
-	staticDenco           http.Handler
-	staticEcho            http.Handler
-	staticGin             http.Handler
-	staticGocraftWeb      http.Handler
-	staticGoji            http.Handler
-	staticGojiv2          http.Handler
-	staticGoJsonRest      http.Handler
-	staticGoRestful       http.Handler
-	staticGorillaMux      http.Handler
-	staticGowwwRouter     http.Handler
-	staticHttpRouter      http.Handler
-	staticHttpTreeMux     http.Handler
-	staticKocha           http.Handler
-	staticFox             http.Handler
-	staticLARS            http.Handler
-	staticMacaron         http.Handler
-	staticMartini         http.Handler
-	staticPat             http.Handler
-	staticPossum          http.Handler
-	staticR2router        http.Handler
+	staticAce                 http.Handler
+	staticAero                http.Handler
+	staticBear                http.Handler
+	staticBeego               http.Handler
+	staticBone                http.Handler
+	staticChi                 http.Handler
+	staticCloudyKitRouter     http.Handler
+	staticDenco               http.Handler
+	staticEcho                http.Handler
+	staticGin                 http.Handler
+	staticGocraftWeb          http.Handler
+	staticGoji                http.Handler
+	staticGojiv2              http.Handler
+	staticGoJsonRest          http.Handler
+	staticGoRestful           http.Handler
+	staticGorillaMux          http.Handler
+	staticGowwwRouter         http.Handler
+	staticHttpRouter          http.Handler
+	staticHttpTreeMux         http.Handler
+	staticHttpTreeMuxParallel http.Handler
+	staticKocha               http.Handler
+	staticFox                 http.Handler
+	stdMux                    http.Handler
+	staticLARS                http.Handler
+	staticMacaron             http.Handler
+	staticMartini             http.Handler
+	staticPat                 http.Handler
+	staticPossum              http.Handler
+	staticR2router            http.Handler
 	// staticRevel           http.Handler
 	staticRivet      http.Handler
 	staticTango      http.Handler
@@ -236,6 +238,9 @@ func init() {
 	})
 	calcMem("Fox", func() {
 		staticFox = loadFox(staticRoutes)
+	})
+	calcMem("StdMux", func() {
+		stdMux = loadStdMux(staticRoutes)
 	})
 	calcMem("CloudyKitRouter", func() {
 		staticCloudyKitRouter = loadCloudyKitRouter(staticRoutes)
@@ -275,6 +280,9 @@ func init() {
 	})
 	calcMem("HttpTreeMux", func() {
 		staticHttpTreeMux = loadHttpTreeMux(staticRoutes)
+	})
+	calcMem("HttpTreeMuxParallel", func() {
+		staticHttpTreeMuxParallel = loadHttpTreeMuxParallel(staticRoutes)
 	})
 	calcMem("Kocha", func() {
 		staticKocha = loadKocha(staticRoutes)
@@ -320,6 +328,12 @@ func init() {
 // All routes
 func BenchmarkFox_StaticAll(b *testing.B) {
 	benchRoutes(b, staticFox, staticRoutes)
+}
+func BenchmarkFox_StaticAllParallel(b *testing.B) {
+	benchRoutesParallel(b, staticFox, staticRoutes)
+}
+func BenchmarkStdMux_StaticAll(b *testing.B) {
+	benchRoutes(b, stdMux, staticRoutes)
 }
 func BenchmarkAce_StaticAll(b *testing.B) {
 	benchRoutes(b, staticAce, staticRoutes)
@@ -379,7 +393,10 @@ func BenchmarkHttpRouter_StaticAll(b *testing.B) {
 	benchRoutes(b, staticHttpRouter, staticRoutes)
 }
 func BenchmarkHttpTreeMux_StaticAll(b *testing.B) {
-	benchRoutes(b, staticHttpRouter, staticRoutes)
+	benchRoutes(b, staticHttpTreeMux, staticRoutes)
+}
+func BenchmarkHttpTreeMux_StaticAllParallel(b *testing.B) {
+	benchRoutesParallel(b, staticHttpTreeMuxParallel, staticRoutes)
 }
 func BenchmarkKocha_StaticAll(b *testing.B) {
 	benchRoutes(b, staticKocha, staticRoutes)

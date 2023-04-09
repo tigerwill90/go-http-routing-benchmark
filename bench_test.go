@@ -6,6 +6,7 @@ package main
 
 import (
 	"net/http"
+	"net/http/httptest"
 	"os"
 	"regexp"
 	"runtime"
@@ -66,6 +67,19 @@ func calcMem(name string, load func()) {
 	println("   "+name+":", after-before, "Bytes")
 }
 
+func benchRequestParallel(b *testing.B, router http.Handler, r *http.Request) {
+	w := new(mockResponseWriter)
+
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			router.ServeHTTP(w, r)
+		}
+	})
+}
+
 func benchRequest(b *testing.B, router http.Handler, r *http.Request) {
 	w := new(mockResponseWriter)
 	u := r.URL
@@ -79,6 +93,26 @@ func benchRequest(b *testing.B, router http.Handler, r *http.Request) {
 		u.RawQuery = rq
 		router.ServeHTTP(w, r)
 	}
+}
+
+func benchRoutesParallel(b *testing.B, router http.Handler, routes []route) {
+	w := new(mockResponseWriter)
+
+	requests := make([]*http.Request, 0, len(routes))
+	for _, rte := range routes {
+		requests = append(requests, httptest.NewRequest(rte.method, rte.path, nil))
+	}
+
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			for i := range requests {
+				router.ServeHTTP(w, requests[i])
+			}
+		}
+	})
 }
 
 func benchRoutes(b *testing.B, router http.Handler, routes []route) {
