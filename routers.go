@@ -837,16 +837,14 @@ func loadGowwwRouterSingle(method, path string, handler http.Handler) http.Handl
 	return router
 }
 
-func foxRouteHandle(c fox.Context) error { return nil }
+func foxRouteHandle(c fox.Context) {}
 
-func foxHandleWrite(c fox.Context) error {
+func foxHandleWrite(c fox.Context) {
 	io.WriteString(c.Writer(), c.Param("name"))
-	return nil
 }
 
-func foxHandleTest(c fox.Context) error {
+func foxHandleTest(c fox.Context) {
 	io.WriteString(c.Writer(), c.Request().RequestURI)
-	return nil
 }
 
 func loadFox(routes []route) http.Handler {
