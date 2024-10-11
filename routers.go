@@ -86,7 +86,7 @@ var loadTestHandler = false
 func init() {
 	// beego sets it to runtime.NumCPU()
 	// Currently none of the contesters does concurrent routing
-	runtime.GOMAXPROCS(1)
+	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	// makes logging 'webscale' (ignores them)
 	log.SetOutput(new(mockResponseWriter))

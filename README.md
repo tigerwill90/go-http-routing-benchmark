@@ -397,3 +397,54 @@ You can bench specific frameworks only by using a regular expression as the valu
 ```bash
 go test -bench="Martini|Gin|HttpMux"
 ```
+
+
+BenchmarkEcho_Param-16                  30564292                37.46 ns/op            0 B/op          0 allocs/op
+BenchmarkGin_Param-16                   30437557                38.10 ns/op            0 B/op          0 allocs/op
+BenchmarkFox_Param-16                   37795508                31.05 ns/op            0 B/op          0 allocs/op
+BenchmarkFox_Param5-16                  19797666                58.70 ns/op            0 B/op          0 allocs/op
+BenchmarkEcho_Param5-16                 15545049                78.29 ns/op            0 B/op          0 allocs/op
+BenchmarkGin_Param5-16                  15978800                75.36 ns/op            0 B/op          0 allocs/op
+BenchmarkFox_Param20-16                  6367680               185.0 ns/op             0 B/op          0 allocs/op
+BenchmarkEcho_Param20-16                 5490054               218.9 ns/op             0 B/op          0 allocs/op
+BenchmarkGin_Param20-16                  6033435               193.4 ns/op             0 B/op          0 allocs/op
+BenchmarkFox_ParamWrite-16               7280419               266.4 ns/op            80 B/op          4 allocs/op
+BenchmarkEcho_ParamWrite-16             14770070                81.44 ns/op            8 B/op          1 allocs/op
+BenchmarkGin_ParamWrite-16              21621970                48.16 ns/op            0 B/op          0 allocs/op
+BenchmarkFox_GithubStatic-16            26807487                42.60 ns/op            0 B/op          0 allocs/op
+BenchmarkEcho_GithubStatic-16           22448922                50.69 ns/op            0 B/op          0 allocs/op
+BenchmarkGin_GithubStatic-16            27127180                44.37 ns/op            0 B/op          0 allocs/op
+BenchmarkFox_GithubParam-16             15258945                78.13 ns/op            0 B/op          0 allocs/op
+BenchmarkEcho_GithubParam-16            12905552                92.73 ns/op            0 B/op          0 allocs/op
+BenchmarkGin_GithubParam-16             14667662                81.02 ns/op            0 B/op          0 allocs/op
+BenchmarkFox_GithubAll-16                  71710             16176 ns/op               0 B/op          0 allocs/op
+BenchmarkEcho_GithubAll-16                 58622             20479 ns/op               0 B/op          0 allocs/op
+BenchmarkGin_GithubAll-16                  70425             17001 ns/op               0 B/op          0 allocs/op
+BenchmarkFox_GPlusStatic-16             41445640                28.39 ns/op            0 B/op          0 allocs/op
+BenchmarkEcho_GPlusStatic-16            32169394                36.99 ns/op            0 B/op          0 allocs/op
+BenchmarkGin_GPlusStatic-16             33785002                34.32 ns/op            0 B/op          0 allocs/op
+BenchmarkFox_GPlusParam-16              30439778                40.30 ns/op            0 B/op          0 allocs/op
+BenchmarkEcho_GPlusParam-16             21481357                53.55 ns/op            0 B/op          0 allocs/op
+BenchmarkGin_GPlusParam-16              23800162                50.34 ns/op            0 B/op          0 allocs/op
+BenchmarkFox_GPlus2Params-16            19215376                62.21 ns/op            0 B/op          0 allocs/op
+BenchmarkEcho_GPlus2Params-16           15759259                76.98 ns/op            0 B/op          0 allocs/op
+BenchmarkGin_GPlus2Params-16            18048640                65.49 ns/op            0 B/op          0 allocs/op
+BenchmarkFox_GPlusAll-16                 1793688               667.0 ns/op             0 B/op          0 allocs/op
+BenchmarkEcho_GPlusAll-16                1446722               823.5 ns/op             0 B/op          0 allocs/op
+BenchmarkGin_GPlusAll-16                 1662506               769.2 ns/op             0 B/op          0 allocs/op
+BenchmarkFox_ParseStatic-16             37430206                30.12 ns/op            0 B/op          0 allocs/op
+BenchmarkEcho_ParseStatic-16            28238470                39.04 ns/op            0 B/op          0 allocs/op
+BenchmarkGin_ParseStatic-16             34163695                34.94 ns/op            0 B/op          0 allocs/op
+BenchmarkFox_ParseParam-16              28172323                38.45 ns/op            0 B/op          0 allocs/op
+BenchmarkEcho_ParseParam-16             26206783                45.92 ns/op            0 B/op          0 allocs/op
+BenchmarkGin_ParseParam-16              28673762                41.67 ns/op            0 B/op          0 allocs/op
+BenchmarkFox_Parse2Params-16            24893214                48.99 ns/op            0 B/op          0 allocs/op
+BenchmarkEcho_Parse2Params-16           21843988                55.50 ns/op            0 B/op          0 allocs/op
+BenchmarkGin_Parse2Params-16            22431162                51.71 ns/op            0 B/op          0 allocs/op
+BenchmarkFox_ParseAll-16                 1000000              1058 ns/op               0 B/op          0 allocs/op
+BenchmarkEcho_ParseAll-16                 800610              1469 ns/op               0 B/op          0 allocs/op
+BenchmarkGin_ParseAll-16                  989595              1206 ns/op               0 B/op          0 allocs/op
+BenchmarkFox_StaticAll-16                 107122             10887 ns/op               0 B/op          0 allocs/op
+BenchmarkFox_StaticAllParallel-16         908905              1272 ns/op               0 B/op          0 allocs/op
+BenchmarkEcho_StaticAll-16                 89002             13292 ns/op               0 B/op          0 allocs/op
+BenchmarkGin_StaticAll-16                 106605             11192 ns/op               0 B/op          0 allocs/op
