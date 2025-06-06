@@ -853,7 +853,7 @@ func loadFox(routes []route) http.Handler {
 		h = foxHandleTest
 	}
 
-	router := fox.New()
+	router, _ := fox.New()
 	for _, route := range routes {
 		router.MustHandle(route.method, route.path, h)
 	}
@@ -861,7 +861,7 @@ func loadFox(routes []route) http.Handler {
 }
 
 func loadFoxSingle(method, path string, handle fox.HandlerFunc) http.Handler {
-	router := fox.New()
+	router, _ := fox.New()
 	router.MustHandle(method, path, handle)
 	return router
 }
