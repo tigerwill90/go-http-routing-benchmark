@@ -6,13 +6,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/tigerwill90/fox"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"regexp"
 	"runtime"
+
+	"github.com/tigerwill90/fox"
 
 	// If you add new routers please:
 	// - Keep the benchmark functions etc. alphabetically sorted
@@ -837,13 +838,13 @@ func loadGowwwRouterSingle(method, path string, handler http.Handler) http.Handl
 	return router
 }
 
-func foxRouteHandle(c fox.Context) {}
+func foxRouteHandle(c *fox.Context) {}
 
-func foxHandleWrite(c fox.Context) {
+func foxHandleWrite(c *fox.Context) {
 	io.WriteString(c.Writer(), c.Param("name"))
 }
 
-func foxHandleTest(c fox.Context) {
+func foxHandleTest(c *fox.Context) {
 	io.WriteString(c.Writer(), c.Request().RequestURI)
 }
 
@@ -853,16 +854,16 @@ func loadFox(routes []route) http.Handler {
 		h = foxHandleTest
 	}
 
-	router, _ := fox.New()
+	router := fox.MustRouter()
 	for _, route := range routes {
-		router.MustHandle(route.method, route.path, h)
+		router.MustAdd([]string{route.method}, route.path, h)
 	}
 	return router
 }
 
 func loadFoxSingle(method, path string, handle fox.HandlerFunc) http.Handler {
-	router, _ := fox.New()
-	router.MustHandle(method, path, handle)
+	router := fox.MustRouter()
+	router.MustAdd(fox.MethodGet, path, handle)
 	return router
 }
 
