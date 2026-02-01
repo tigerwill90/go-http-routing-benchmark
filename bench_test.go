@@ -198,6 +198,13 @@ func BenchmarkFox_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+
+func BenchmarkChi_Param(b *testing.B) {
+	router := loadChiSingle("GET", "/user/{name}", httpStdMux)
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+
 func BenchmarkGocraftWeb_Param(b *testing.B) {
 	router := loadGocraftWebSingle("GET", "/user/:name", gocraftWebHandler)
 
@@ -343,6 +350,13 @@ func BenchmarkFox_Param5(b *testing.B) {
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
 }
+
+func BenchmarkChi_Param5(b *testing.B) {
+	router := loadChiSingle("GET", fiveBrace, httpStdMux)
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+
 func BenchmarkAce_Param5(b *testing.B) {
 	router := loadAceSingle("GET", fiveColon, aceHandle)
 
@@ -542,6 +556,13 @@ func BenchmarkFox_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+
+func BenchmarkChi_Param20(b *testing.B) {
+	router := loadChiSingle("GET", twentyBrace, httpStdMux)
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
+
 func BenchmarkAce_Param20(b *testing.B) {
 	router := loadAceSingle("GET", twentyColon, aceHandle)
 
@@ -734,6 +755,12 @@ func BenchmarkVulcan_Param20(b *testing.B) {
 // Route with Param and write
 func BenchmarkFox_ParamWrite(b *testing.B) {
 	router := loadFoxSingle("GET", "/user/{name}", foxHandleWrite)
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+
+func BenchmarkChi_ParamWrite(b *testing.B) {
+	router := loadChiSingle("GET", "/user/{name}", httpChiWrite)
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }

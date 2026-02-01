@@ -239,6 +239,9 @@ func init() {
 	calcMem("Fox", func() {
 		staticFox = loadFox(staticRoutes)
 	})
+	calcMem("Chi", func() {
+		staticChi = loadChi(staticRoutes)
+	})
 	calcMem("StdMux", func() {
 		stdMux = loadStdMux(staticRoutes)
 	})

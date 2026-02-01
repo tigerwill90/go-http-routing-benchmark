@@ -16,6 +16,7 @@ require (
 	github.com/emicklei/go-restful v2.16.0+incompatible
 	github.com/fox-toolkit/fox v0.26.3
 	github.com/gin-gonic/gin v1.11.0
+	github.com/go-chi/chi/v5 v5.2.4
 	github.com/go-martini/martini v0.0.0-20170121215854-22fa46961aab
 	github.com/go-playground/lars v4.0.1+incompatible
 	github.com/go-zoo/bone v1.3.0

@@ -14,6 +14,7 @@ import (
 	"runtime"
 
 	"github.com/fox-toolkit/fox"
+	"github.com/go-chi/chi/v5"
 
 	// If you add new routers please:
 	// - Keep the benchmark functions etc. alphabetically sorted
@@ -87,7 +88,7 @@ var loadTestHandler = false
 func init() {
 	// beego sets it to runtime.NumCPU()
 	// Currently none of the contesters does concurrent routing
-	runtime.GOMAXPROCS(runtime.NumCPU())
+	runtime.GOMAXPROCS(1)
 
 	// makes logging 'webscale' (ignores them)
 	log.SetOutput(new(mockResponseWriter))
@@ -874,6 +875,33 @@ func loadStdMux(routes []route) http.Handler {
 	for _, route := range routes {
 		router.HandleFunc(route.path, httpStdMux)
 	}
+	return router
+}
+
+func httpChiWrite(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, chi.URLParam(r, "name"))
+}
+
+func httpChiTest(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, r.RequestURI)
+}
+
+func loadChi(routes []route) http.Handler {
+	h := httpStdMux
+	if loadTestHandler {
+		h = httpChiTest
+	}
+
+	router := chi.NewRouter()
+	for _, route := range routes {
+		router.MethodFunc(route.method, route.path, h)
+	}
+	return router
+}
+
+func loadChiSingle(method, path string, handle http.HandlerFunc) http.Handler {
+	router := chi.NewRouter()
+	router.MethodFunc(method, path, handle)
 	return router
 }
 

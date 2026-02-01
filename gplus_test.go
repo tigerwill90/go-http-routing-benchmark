@@ -64,7 +64,6 @@ var (
 	gplusBear            http.Handler
 	gplusBeego           http.Handler
 	gplusBone            http.Handler
-	gplusChi             http.Handler
 	gplusCloudyKitRouter http.Handler
 	gplusDenco           http.Handler
 	gplusEcho            http.Handler
@@ -78,6 +77,7 @@ var (
 	gplusGowwwRouter     http.Handler
 	gplusHttpRouter      http.Handler
 	gplusFox             http.Handler
+	gplusChi             http.Handler
 	gplusHttpTreeMux     http.Handler
 	gplusKocha           http.Handler
 	gplusLARS            http.Handler
