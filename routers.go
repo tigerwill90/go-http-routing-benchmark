@@ -13,7 +13,7 @@ import (
 	"regexp"
 	"runtime"
 
-	"github.com/tigerwill90/fox"
+	"github.com/fox-toolkit/fox"
 
 	// If you add new routers please:
 	// - Keep the benchmark functions etc. alphabetically sorted
