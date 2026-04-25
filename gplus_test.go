@@ -35,6 +35,8 @@ var gplusAPI = []route{
 	{"DELETE", "/moments/:id"},
 }
 
+var foxGplusAPIRuntime = runtimeRoutes(foxGplusAPI)
+
 var foxGplusAPI = []route{
 	// People
 	{"GET", "/people/{userId}"},
@@ -617,7 +619,7 @@ func BenchmarkVulcan_GPlus2Params(b *testing.B) {
 
 // All Routes
 func BenchmarkFox_GPlusAll(b *testing.B) {
-	benchRoutes(b, gplusFox, foxGplusAPI)
+	benchRoutes(b, gplusFox, foxGplusAPIRuntime)
 }
 func BenchmarkAce_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusAce, gplusAPI)

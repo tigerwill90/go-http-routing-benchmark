@@ -11,7 +11,6 @@ import (
 	"net/http"
 	"os"
 	"regexp"
-	"runtime"
 
 	"github.com/fox-toolkit/fox"
 	"github.com/go-chi/chi/v5"
@@ -37,7 +36,7 @@ import (
 	"github.com/gorilla/mux"
 	gowwwrouter "github.com/gowww/router"
 	"github.com/julienschmidt/httprouter"
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v5"
 	llog "github.com/lunny/log"
 	"github.com/lunny/tango"
 	vulcan "github.com/mailgun/route"
@@ -86,9 +85,9 @@ var nullLogger *log.Logger
 var loadTestHandler = false
 
 func init() {
-	// beego sets it to runtime.NumCPU()
-	// Currently none of the contesters does concurrent routing
-	runtime.GOMAXPROCS(1)
+	// GOMAXPROCS is intentionally not pinned here — pass `-cpu=N` to
+	// `go test` to control it per invocation (e.g. -cpu=1 for the
+	// single-thread benchmarks, -cpu=16 for *Parallel).
 
 	// makes logging 'webscale' (ignores them)
 	log.SetOutput(new(mockResponseWriter))
@@ -420,16 +419,16 @@ func loadDencoSingle(method, path string, h denco.HandlerFunc) http.Handler {
 }
 
 // Echo
-func echoHandler(c echo.Context) error {
+func echoHandler(c *echo.Context) error {
 	return nil
 }
 
-func echoHandlerWrite(c echo.Context) error {
+func echoHandlerWrite(c *echo.Context) error {
 	io.WriteString(c.Response(), c.Param("name"))
 	return nil
 }
 
-func echoHandlerTest(c echo.Context) error {
+func echoHandlerTest(c *echo.Context) error {
 	io.WriteString(c.Response(), c.Request().RequestURI)
 	return nil
 }

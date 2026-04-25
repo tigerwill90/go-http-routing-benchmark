@@ -57,6 +57,8 @@ var parseAPI = []route{
 
 // Parse
 // https://parse.com/docs/rest#summary
+var foxParseAPIRuntime = runtimeRoutes(foxParseAPI)
+
 var foxParseAPI = []route{
 	// Objects
 	{"POST", "/1/classes/{className}"},
@@ -660,7 +662,7 @@ func BenchmarkVulcan_Parse2Params(b *testing.B) {
 
 // All Routes
 func BenchmarkFox_ParseAll(b *testing.B) {
-	benchRoutes(b, parseFox, foxParseAPI)
+	benchRoutes(b, parseFox, foxParseAPIRuntime)
 }
 func BenchmarkAce_ParseAll(b *testing.B) {
 	benchRoutes(b, parseAce, parseAPI)

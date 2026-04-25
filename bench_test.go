@@ -95,6 +95,43 @@ func benchRequest(b *testing.B, router http.Handler, r *http.Request) {
 	}
 }
 
+// runtimeRoutes returns a copy of routes with brace-delimited parameters
+// (e.g. "{userId}") replaced by an equal-length run of 'a'. Used by *_All
+// benchmarks against routers whose registered patterns use {name} syntax:
+// real-world request paths don't contain '{' / '}', and routers like fox
+// take an escaped-path slow path when they do — which would skew the
+// runtime numbers in a way unrelated to routing.
+func runtimeRoutes(routes []route) []route {
+	out := make([]route, len(routes))
+	for i, r := range routes {
+		if !strings.ContainsRune(r.path, '{') {
+			out[i] = r
+			continue
+		}
+		var b strings.Builder
+		b.Grow(len(r.path))
+		path := r.path
+		for j := 0; j < len(path); {
+			if path[j] == '{' {
+				k := strings.IndexByte(path[j:], '}')
+				if k < 0 {
+					b.WriteString(path[j:])
+					break
+				}
+				for n := 0; n <= k; n++ {
+					b.WriteByte('a')
+				}
+				j += k + 1
+				continue
+			}
+			b.WriteByte(path[j])
+			j++
+		}
+		out[i] = route{method: r.method, path: b.String()}
+	}
+	return out
+}
+
 func benchRoutesParallel(b *testing.B, router http.Handler, routes []route) {
 	w := new(mockResponseWriter)
 

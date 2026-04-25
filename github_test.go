@@ -241,6 +241,8 @@ var githubAPI = []route{
 	{"DELETE", "/user/keys/:id"},
 }
 
+var foxGithubAPIRuntime = runtimeRoutes(foxGithubAPI)
+
 var foxGithubAPI = []route{
 	// OAuth Authorizations
 	{"GET", "/authorizations"},
@@ -1123,7 +1125,7 @@ func BenchmarkVulcan_GithubParam(b *testing.B) {
 
 // All routes
 func BenchmarkFox_GithubAll(b *testing.B) {
-	benchRoutes(b, githubFox, foxGithubAPI)
+	benchRoutes(b, githubFox, foxGithubAPIRuntime)
 }
 func BenchmarkChi_GithubAll(b *testing.B) {
 	benchRoutes(b, githubChi, chiGithubAPI)
