@@ -14,7 +14,7 @@ require (
 	github.com/cloudykit/router v0.0.0-20170501012743-15c4ed71df81
 	github.com/dimfeld/httptreemux v5.0.1+incompatible
 	github.com/emicklei/go-restful v2.16.0+incompatible
-	github.com/fox-toolkit/fox v0.28.2
+	github.com/fox-toolkit/fox v0.29.3
 	github.com/gin-gonic/gin v1.12.0
 	github.com/go-chi/chi/v5 v5.2.5
 	github.com/go-martini/martini v0.0.0-20170121215854-22fa46961aab
@@ -24,7 +24,7 @@ require (
 	github.com/gorilla/mux v1.8.1
 	github.com/gowww/router v1.0.0
 	github.com/julienschmidt/httprouter v1.3.0
-	github.com/labstack/echo/v5 v5.1.0
+	github.com/labstack/echo/v5 v5.1.1
 	github.com/lunny/log v0.0.0-20160921050905-7887c61bf0de
 	github.com/lunny/tango v0.5.6
 	github.com/mailgun/route v0.0.0-20181101151700-58b44163b968
@@ -54,10 +54,10 @@ require (
 	github.com/akyoto/uuid v1.1.3 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bytedance/gopkg v0.1.4 // indirect
-	github.com/bytedance/sonic v1.15.0 // indirect
+	github.com/bytedance/sonic v1.15.1 // indirect
 	github.com/bytedance/sonic/loader v0.5.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/cloudwego/base64x v0.1.6 // indirect
+	github.com/cloudwego/base64x v0.1.7 // indirect
 	github.com/codegangsta/inject v0.0.0-20150114235600-33e0aa1cb7c0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.13 // indirect
 	github.com/gin-contrib/sse v1.1.1 // indirect
@@ -70,17 +70,17 @@ require (
 	github.com/goccy/go-yaml v1.19.2 // indirect
 	github.com/gorilla/sessions v1.2.0 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
-	github.com/gravitational/trace v1.5.3 // indirect
+	github.com/gravitational/trace v1.5.4 // indirect
 	github.com/hashicorp/golang-lru v1.0.2 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
-	github.com/mattn/go-isatty v0.0.21 // indirect
+	github.com/mattn/go-isatty v0.0.22 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/oxtoacart/bpool v0.0.0-20190530202638-03653db5a59c // indirect
-	github.com/pelletier/go-toml/v2 v2.3.0 // indirect
+	github.com/pelletier/go-toml/v2 v2.3.1 // indirect
 	github.com/philhofer/fwd v1.2.0 // indirect
 	github.com/pilu/config v0.0.0-20131214182432-3eb99e6c0b9a // indirect
 	github.com/pilu/miniassert v0.0.0-20140522125902-bee63581261a // indirect
@@ -101,7 +101,7 @@ require (
 	github.com/unknwon/com v1.0.1 // indirect
 	github.com/vulcand/predicate v1.3.0 // indirect
 	github.com/zeebo/xxh3 v1.1.0 // indirect
-	go.mongodb.org/mongo-driver/v2 v2.5.1 // indirect
+	go.mongodb.org/mongo-driver/v2 v2.6.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.4 // indirect
 	golang.org/x/arch v0.26.0 // indirect
 	golang.org/x/crypto v0.50.0 // indirect
@@ -110,6 +110,6 @@ require (
 	golang.org/x/text v0.36.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
-	gopkg.in/ini.v1 v1.67.1 // indirect
+	gopkg.in/ini.v1 v1.67.2 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
